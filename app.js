@@ -1,29 +1,34 @@
 d3.json("samples.json").then(function(data) {
+
+    var example = data.samples[0];
+    delete example.id;
+
+    sortableArray = [];
+    for (i=0; i<example.sample_values.length; i++) {
+        let arrayObj = {sample_value: example.sample_values[i], otu_id: example.otu_ids[i], otu_label: example.otu_labels[i]};
+        sortableArray.push(arrayObj)
+    };
+
+    sortableArray.sort((a, b) => {
+        return b.sample_value - a.sample_value;
+    });
+
+    topTenArray = sortableArray.slice(0,10);
+
+    var sample_values = [];
+    var otu_ids = [];
+    var otu_labels = [];
+    for (i=0; i<10; i++) {
+        sample_values.push(topTenArray[i].sample_value);
+        otu_ids.push("OTU" + topTenArray[i].otu_id);
+        otu_labels.push(topTenArray[i].otu_label);
+    }
     
-    var sample_values = data.samples[0].sample_values
-    var otu_ids = data.samples[0].otu_ids
-    var otu_labels = data.samples[0].otu_labels
-
-    console.log(sample_values)
-
-    // sample_values = []
-    // otu_ids = []
-    // otu_labels = []
-    // for (i=0; i<data.samples.length; i++) {
-    //     // console.log(data.samples[i].sample_values.length);
-    //     for (j=0; j<data.samples[i].sample_values.length; j++) {
-    //         sample_values.push(data.samples[i].sample_values[j]);
-    //     };
-    //     for (j=0; j<data.samples[i].otu_ids.length; j++) {
-    //         otu_ids.push(data.samples[i].otu_ids[j]);
-    //     };
-    //     for (j=0; j<data.samples[i].otu_labels.length; j++) {
-    //         otu_labels.push(data.samples[i].otu_labels[j]);
-    //     };
-    // };
+    console.log(sample_values);
+    console.log(otu_ids);
 
     var trace1 = {
-        x: otu_labels,
+        x: otu_ids,
         y: sample_values,
         type: "bar"
     }
