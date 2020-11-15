@@ -32,7 +32,6 @@ d3.json("samples.json").then(function(data) {
         d3.select("ul").append("li").text("wfreq: " + data.metadata[getId()].wfreq);
     }
 
-
     // Generate the plot
     function updatePloty() {
         // Update the demo info box
@@ -48,13 +47,27 @@ d3.json("samples.json").then(function(data) {
         for (i=0; i<10; i++) {
             slicedArray[0][i] = "OTU " + slicedArray[0][i]
         }
-        // Generate the plot itself
-        let trace = {
+        // Generate the bar plot
+        let trace1 = {
             x: slicedArray[1].reverse(),
             y: slicedArray[0].reverse(),
             orientation: 'h',
+            hovertext: slicedArray[2].reverse(),
             type: 'bar'
         }
-        Plotly.newPlot('bar',[trace])
+        Plotly.newPlot('bar',[trace1])
+        // Generate the bubble plot
+        let trace2 = {
+            x: workingArray[0],
+            y: workingArray[1],
+            mode: 'markers',
+            marker: {
+                size: workingArray[1],
+                color: workingArray[0]
+            },
+            text: workingArray[2]
+        }
+        Plotly.newPlot('bubble',[trace2])
+
     }
 })
